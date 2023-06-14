@@ -5,7 +5,7 @@ provider "aws" {
 
 provider "kubernetes" {
   config_path    = "~/.kube/config"
-  config_context = "arn:aws:eks:us-east-1:127298958182:cluster/kube-news"
+  config_context = "arn:aws:eks:us-east-1:127298958182:cluster/netflix"
 }
 
 provider "helm" {

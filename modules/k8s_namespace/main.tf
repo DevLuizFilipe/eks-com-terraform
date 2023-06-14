@@ -1,4 +1,4 @@
-resource "kubernetes_namespace" "kube_news" {
+resource "kubernetes_namespace" "namespace" {
   metadata {
     name = var.namespace_name
   }
