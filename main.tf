@@ -114,11 +114,11 @@ module "newrelic-agent" {
   newrelic_agent_repository         = "https://helm-charts.newrelic.com"
   newrelic_agent_chart              = "nri-bundle"
   newrelic_agent_namespace          = module.newrelic-namespace.namespace_name
-  newrelic_agent_license_key        = "dbb1fc594b8c85ab75a676c4568097127bf5NRAL"
+  newrelic_agent_license_key        = "insira seu token"
   newrelic_agent_cluster            = "netflix"
   newrelic_agent_image_tag          = "2.7.0"
-  newrelic_agent_pixie_api_key      = "px-api-707c0154-7a57-415b-881f-4254b1089485"
-  newrelic_agent_pixie_deploy_key   = "px-dep-ca733e19-dcad-4ae5-918c-1c3abaf55995"
+  newrelic_agent_pixie_api_key      = "insira seu token"
+  newrelic_agent_pixie_deploy_key   = "insira seu token"
   newrelic_agent_pixie_cluster_name = module.newrelic-agent.newrelic_agent_cluster
   depends_on                        = [module.newrelic-namespace]
 }
