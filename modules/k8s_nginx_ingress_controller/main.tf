@@ -24,28 +24,3 @@ resource "helm_release" "nginx_ingress_controller" {
     value = "nginx"
   }
 }
-
-resource "kubernetes_service_account" "service_account" {
-  metadata {
-    name      = var.nginx_ingress_controller_name
-    namespace = var.nginx_ingress_controller_namespace
-  }
-}
-
-resource "kubernetes_cluster_role_binding" "role_binding" {
-  metadata {
-    name = var.nginx_ingress_controller_name
-  }
-
-  role_ref {
-    api_group = "rbac.authorization.k8s.io"
-    kind      = "ClusterRole"
-    name      = "cluster-admin"
-  }
-
-  subject {
-    kind      = "ServiceAccount"
-    name      = kubernetes_service_account.service_account.metadata[0].name
-    namespace = var.nginx_ingress_controller_namespace
-  }
-}

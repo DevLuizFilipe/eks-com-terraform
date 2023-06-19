@@ -13,10 +13,10 @@ variable "eks_subnets_id" {
   description = "ID das subnets"
 }
 
-# variable "eks_security_group_id" {
-#   type        = list(string)
-#   description = "ID do Security Group"
-# }
+variable "eks_security_group_id" {
+  type        = list(string)
+  description = "ID do Security Group"
+}
 
 variable "eks_enviroment_tag" {
   type        = string

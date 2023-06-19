@@ -3,12 +3,17 @@ resource "aws_eks_cluster" "cluster" {
   role_arn = var.eks_role_arn
 
   vpc_config {
-    subnet_ids = var.eks_subnets_id
+    subnet_ids         = var.eks_subnets_id
+    security_group_ids = var.eks_security_group_id
   }
 
   tags = {
     Environment = var.eks_enviroment_tag
   }
+}
+
+data "aws_eks_cluster_auth" "acess" {
+  name = aws_eks_cluster.cluster.name
 }
 
 resource "aws_eks_node_group" "node_group" {

@@ -1,15 +1,11 @@
 #Cria uma VPC com duas subnetes privadas que utiliza um NAT gateway e uma publica que utiliza um internet gateway
 module "vpc" {
-  source                     = "./modules/vpc/"
-  vpc_name                   = "vpc-netflix"
-  vpc_cidr_block             = "10.0.0.0/16"
-  vpc_subnet1_cidr_block     = "10.0.1.0/24"
-  vpc_subnet2_cidr_block     = "10.0.2.0/24"
-  vpc_subnet3_cidr_block     = "10.0.3.0/24"
-  vpc_subnet_region1         = "us-east-1a"
-  vpc_subnet_region2         = "us-east-1b"
-  vpc_subnet_region3         = "us-east-1c"
-  vpc_route_table_cidr_block = "0.0.0.0/0"
+  source                   = "./modules/vpc/"
+  vpc_name                 = "vpc-netflix"
+  vpc_cidr_block           = "192.168.0.0/16"
+  vpc_subnet_private_count = "2"
+  vpc_subnet_public_count  = "2"
+  vpc_subnet_regions       = "us-east-1a,us-east-1b"
 }
 
 #Cria um IAM role para o EKS e cria uma role para o Node Group
@@ -24,7 +20,8 @@ module "eks" {
   source                         = "./modules/eks/"
   eks_name                       = "netflix"
   eks_role_arn                   = module.iam.role_eks_arn
-  eks_subnets_id                 = [module.vpc.subnet1_id, module.vpc.subnet2_id]
+  eks_subnets_id                 = module.vpc.subnet_private_id
+  eks_security_group_id          = [module.vpc.security_group_id]
   eks_enviroment_tag             = "production"
   eks_node_group_name            = "apps"
   eks_node_group_role_arn        = module.iam.role_eks_node_group_arn
@@ -108,17 +105,17 @@ module "newrelic-namespace" {
   depends_on     = [module.eks]
 }
 
-module "newrelic-agent" {
-  source                            = "./modules/k8s_newrelic_agent/"
-  newrelic_agent_name               = "newrelic-bundle"
-  newrelic_agent_repository         = "https://helm-charts.newrelic.com"
-  newrelic_agent_chart              = "nri-bundle"
-  newrelic_agent_namespace          = module.newrelic-namespace.namespace_name
-  newrelic_agent_license_key        = "insira seu token"
-  newrelic_agent_cluster            = "netflix"
-  newrelic_agent_image_tag          = "2.7.0"
-  newrelic_agent_pixie_api_key      = "insira seu token"
-  newrelic_agent_pixie_deploy_key   = "insira seu token"
-  newrelic_agent_pixie_cluster_name = module.newrelic-agent.newrelic_agent_cluster
-  depends_on                        = [module.newrelic-namespace]
-}
+# module "newrelic-agent" {
+#   source                            = "./modules/k8s_newrelic_agent/"
+#   newrelic_agent_name               = "newrelic-bundle"
+#   newrelic_agent_repository         = "https://helm-charts.newrelic.com"
+#   newrelic_agent_chart              = "nri-bundle"
+#   newrelic_agent_namespace          = module.newrelic-namespace.namespace_name
+#   newrelic_agent_license_key        = "insira seu token"
+#   newrelic_agent_cluster            = "netflix"
+#   newrelic_agent_image_tag          = "2.7.0"
+#   newrelic_agent_pixie_api_key      = "insira seu token"
+#   newrelic_agent_pixie_deploy_key   = "insira seu token"
+#   newrelic_agent_pixie_cluster_name = module.newrelic-agent.newrelic_agent_cluster
+#   depends_on                        = [module.newrelic-namespace]
+# }
