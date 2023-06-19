@@ -8,6 +8,11 @@ variable "eks_role_arn" {
   description = "ARN da role"
 }
 
+variable "eks_control_plane_version" {
+  type        = string
+  description = "Versão do painel de controle EKS"
+}
+
 variable "eks_subnets_id" {
   type        = list(string)
   description = "ID das subnets"
@@ -21,6 +26,11 @@ variable "eks_security_group_id" {
 variable "eks_enviroment_tag" {
   type        = string
   description = "Tag de ambiente"
+}
+
+variable "eks_node_group_version" {
+  type        = string
+  description = "Versão do Node Group EKS"
 }
 
 variable "eks_node_group_name" {

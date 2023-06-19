@@ -20,9 +20,11 @@ module "eks" {
   source                         = "./modules/eks/"
   eks_name                       = "netflix"
   eks_role_arn                   = module.iam.role_eks_arn
+  eks_control_plane_version      = "1.27" #Alterar não indispõe as aplicações versões: https://docs.aws.amazon.com/eks/latest/userguide/platform-versions.html
   eks_subnets_id                 = module.vpc.subnet_private_id
   eks_security_group_id          = [module.vpc.security_group_id]
   eks_enviroment_tag             = "production"
+  eks_node_group_version         = "1.27" #Alterar indispõe as aplicações (Boa prática atualizar fora do horário comercial)
   eks_node_group_name            = "apps"
   eks_node_group_role_arn        = module.iam.role_eks_node_group_arn
   eks_nodegroup_desired_instance = "4"
