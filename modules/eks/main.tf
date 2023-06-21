@@ -1,7 +1,7 @@
 resource "aws_eks_cluster" "cluster" {
   name     = var.eks_name
   role_arn = var.eks_role_arn
-  version = var.eks_control_plane_version
+  version  = var.eks_control_plane_version
 
   vpc_config {
     subnet_ids         = var.eks_subnets_id
@@ -18,9 +18,10 @@ data "aws_eks_cluster_auth" "acess" {
 }
 
 resource "aws_eks_node_group" "node_group" {
-  version = var.eks_node_group_version
+  count           = var.eks_node_group_count
+  version         = var.eks_node_group_version
   cluster_name    = aws_eks_cluster.cluster.name
-  node_group_name = var.eks_node_group_name
+  node_group_name = "${var.eks_node_group_name}-${count.index + 1}"
   node_role_arn   = var.eks_node_group_role_arn
   subnet_ids      = var.eks_subnets_id
 

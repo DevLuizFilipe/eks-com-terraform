@@ -28,6 +28,11 @@ variable "eks_enviroment_tag" {
   description = "Tag de ambiente"
 }
 
+variable "eks_node_group_count" {
+  type        = number
+  description = "Quantidade de Node Group"
+}
+
 variable "eks_node_group_version" {
   type        = string
   description = "Versão do Node Group EKS"
